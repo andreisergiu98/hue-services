@@ -1,11 +1,11 @@
 name: Deploy app
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 jobs:
-  release:
+  pre-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -34,5 +34,7 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
           files: dist/release.tar.gz
