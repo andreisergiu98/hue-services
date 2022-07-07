@@ -1,5 +1,6 @@
-import { env } from "./env";
 import * as hue from "node-hue-api";
+import { env } from "./env";
+import { login } from "./login";
 
 async function discoverBridge() {
   const results = await hue.discovery.nupnpSearch();
@@ -21,5 +22,5 @@ function getBridgeIp() {
 export async function createHueApi() {
   const ip = await getBridgeIp();
   const local = hue.api.createLocal(ip);
-  return local.connect(env.username, env.clientKey);
+  return login(local);
 }

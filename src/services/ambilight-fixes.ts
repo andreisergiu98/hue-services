@@ -1,5 +1,4 @@
 import { Api } from "node-hue-api/dist/esm/api/Api";
-import { createHueApi } from "../api";
 
 async function getRedundantAmbilightAreas(api: Api) {
   const areas = await api.groups.getEntertainment();
@@ -13,14 +12,17 @@ async function getRedundantAmbilightAreas(api: Api) {
 }
 
 async function deleteAmbilightAreas(api: Api, ids: number[]) {
+  if (ids.length === 0) {
+    return;
+  }
+
   console.log("Deleting ambilight areas", ids);
   const promises = ids.map((id) => api.groups.deleteGroup(id));
   return Promise.all(promises);
 }
 
-async function cleanAmbilightAreas() {
+async function cleanAmbilightAreas(api: Api) {
   try {
-    const api = await createHueApi();
     const ids = await getRedundantAmbilightAreas(api);
     await deleteAmbilightAreas(api, ids);
   } catch (e) {
@@ -28,8 +30,12 @@ async function cleanAmbilightAreas() {
   }
 }
 
-export function startAmbilightFixesService() {
+export function startAmbilightFixesService(api: Api) {
+  console.log("Started ambilight fixes service");
+
+  cleanAmbilightAreas(api);
+
   setInterval(() => {
-    cleanAmbilightAreas();
-  }, 15 * 60 * 1000);
+    cleanAmbilightAreas(api);
+  }, 5 * 60 * 1000);
 }

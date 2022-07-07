@@ -4,5 +4,7 @@
 .pnp.cjs
 .pnp.loader.mjs
 
+.env
+
 dist
 .cache

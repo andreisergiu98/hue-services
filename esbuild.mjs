@@ -1,8 +1,8 @@
-const fs = require("fs");
-const yargs = require("yargs");
-const esbuild = require("esbuild");
-const { pnpPlugin } = require("@yarnpkg/esbuild-plugin-pnp");
-const { esbuildCommands } = require("esbuild-plugin-commands");
+import fs from "fs";
+import yargs from "yargs";
+import esbuild from "esbuild";
+import { pnpPlugin } from "@yarnpkg/esbuild-plugin-pnp";
+import { esbuildCommands } from "esbuild-plugin-commands";
 
 const packageConfig = JSON.parse(
   fs.readFileSync(process.cwd() + "/package.json", "utf-8")
