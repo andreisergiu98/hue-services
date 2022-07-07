@@ -23,18 +23,12 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn
-      - name: Build app
-        run: yarn types && yarn build
-      - name: Archive Release
-        uses: thedoctor0/zip-release@main
-        with:
-          type: tar
-          filename: release.tar.gz
-          directory: dist
+      - name: Build and pack
+        run: yarn types && yarn build && yarn fixup && yarn pack --out release.tar.gz
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: dist/release.tar.gz
+          files: release.tar.gz
